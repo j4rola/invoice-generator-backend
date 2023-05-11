@@ -12,7 +12,7 @@ app.get('/test', (req, res) => {
 const port = process.env.port || 3000
 
  
-app.post('/download', (req, res) => {          
+app.get('/download', (req, res) => {          
   const doc = new PDFDocument();       
   
   doc.font('Helvetica')
@@ -34,5 +34,5 @@ app.post('/download', (req, res) => {
 });
 
 app.listen(port, () => {                          
-  console.log('Server started on port 3000');     
+  console.log(`Server started on port ${port}`);     
 });   

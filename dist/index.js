@@ -10,7 +10,7 @@ app.get('/test', (req, res) => {
     res.json({ test: 'test' });
 });
 const port = process.env.port || 3000;
-app.post('/download', (req, res) => {
+app.get('/download', (req, res) => {
     const doc = new pdfkit_1.default();
     doc.font('Helvetica');
     // Add content to the PDF document   
@@ -26,6 +26,6 @@ app.post('/download', (req, res) => {
     doc.end();
 });
 app.listen(port, () => {
-    console.log('Server started on port 3000');
+    console.log(`Server started on port ${port}`);
 });
 //# sourceMappingURL=index.js.map
