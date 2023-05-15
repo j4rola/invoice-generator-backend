@@ -7,6 +7,7 @@ import cors from 'cors'
 
 const app = express();
 app.use(cors())
+
 const templateFilePath = path.join(__dirname, '/index.html');
 const cssFilePath = path.join(__dirname, '/style.css'); // Path to your CSS file
 
@@ -60,7 +61,7 @@ app.get('/download', (req, res) => {
   });
   } catch (error) {
     console.log(error)
-    res.send(error)
+    res.json({error: error})
   }
   
 });

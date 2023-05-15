@@ -79,7 +79,7 @@ app.get('/download', (req, res) => {
     }
     catch (error) {
         console.log(error);
-        res.send(error);
+        res.json({ error: error });
     }
 });
 const port = process.env.PORT || 3000;
