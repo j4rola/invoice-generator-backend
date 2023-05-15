@@ -31,7 +31,9 @@ const express_1 = __importDefault(require("express"));
 const pdf = __importStar(require("html-pdf"));
 const fs_1 = __importDefault(require("fs"));
 const mustache_1 = __importDefault(require("mustache"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 const templateFilePath = path_1.default.join(__dirname, '/index.html');
 const cssFilePath = path_1.default.join(__dirname, '/style.css'); // Path to your CSS file
 app.get('/', (req, res) => {

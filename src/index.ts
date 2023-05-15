@@ -3,12 +3,14 @@ import express from 'express';
 import * as pdf from 'html-pdf';
 import fs from 'fs';
 import mustache from 'mustache';
+import cors from 'cors'
 
 const app = express();
+app.use(cors())
 const templateFilePath = path.join(__dirname, '/index.html');
 const cssFilePath = path.join(__dirname, '/style.css'); // Path to your CSS file
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => {  
   res.send('testing')
 })
 

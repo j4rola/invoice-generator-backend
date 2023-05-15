@@ -20,6 +20,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "html-pdf": "^3.0.1",
     "mustache": "^4.2.0",
     "nodemon": "^2.0.22",
