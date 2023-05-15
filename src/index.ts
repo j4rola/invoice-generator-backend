@@ -58,6 +58,7 @@ app.get('/download', (req, res) => {
   });
   } catch (error) {
     console.log(error)
+    res.send(error)
   }
   
 });
