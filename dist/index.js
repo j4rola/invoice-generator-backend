@@ -38,18 +38,19 @@ app.get('/', (req, res) => {
     res.send('testing');
 });
 app.get('/download', (req, res) => {
-    // Read the HTML template file content
-    const template = fs_1.default.readFileSync(templateFilePath, 'utf-8');
-    // Read the CSS file content
-    const css = fs_1.default.readFileSync(cssFilePath, 'utf-8');
-    // Replace the placeholders in the template with actual values from the request
-    const html = mustache_1.default.render(template, {
-        name: 'test',
-        email: 'testing',
-        // Add more values as needed
-    });
-    // Combine HTML template and CSS styles
-    const htmlWithStyles = `
+    try {
+        // Read the HTML template file content
+        const template = fs_1.default.readFileSync(templateFilePath, 'utf-8');
+        // Read the CSS file content
+        const css = fs_1.default.readFileSync(cssFilePath, 'utf-8');
+        // Replace the placeholders in the template with actual values from the request
+        const html = mustache_1.default.render(template, {
+            name: 'test',
+            email: 'testing',
+            // Add more values as needed
+        });
+        // Combine HTML template and CSS styles
+        const htmlWithStyles = `
     <html>
       <head>
         <style>
@@ -61,18 +62,22 @@ app.get('/download', (req, res) => {
       </body>
     </html>
   `;
-    // Generate the PDF from HTML
-    pdf.create(htmlWithStyles).toStream((err, stream) => {
-        if (err) {
-            res.status(500).send('An error occurred');
-            return;
-        }
-        // Set the appropriate headers for PDF response
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=converted.pdf');
-        // Pipe the PDF stream to the response
-        stream.pipe(res);
-    });
+        // Generate the PDF from HTML
+        pdf.create(htmlWithStyles).toStream((err, stream) => {
+            if (err) {
+                res.status(500).send('An error occurred');
+                return;
+            }
+            // Set the appropriate headers for PDF response
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=converted.pdf');
+            // Pipe the PDF stream to the response
+            stream.pipe(res);
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
 });
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

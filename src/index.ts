@@ -13,7 +13,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/download', (req, res) => {
-  // Read the HTML template file content
+
+  try {
+    // Read the HTML template file content
   const template = fs.readFileSync(templateFilePath, 'utf-8');
 
   // Read the CSS file content
@@ -54,6 +56,10 @@ app.get('/download', (req, res) => {
     // Pipe the PDF stream to the response
     stream.pipe(res);
   });
+  } catch (error) {
+    console.log(error)
+  }
+  
 });
 
 const port = process.env.PORT || 3000; 
