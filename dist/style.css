@@ -1,0 +1,21 @@
+#container {
+
+    text-align: center;  
+
+}
+
+#test {
+    color: red; 
+    background-color: black;
+    padding: 100px;
+}
+
+.centered {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#container p {
+    display: inline-block; 
+}
