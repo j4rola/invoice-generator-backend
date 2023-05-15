@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.send('testing')
 })
 
-app.get('/download', (req, res) => {
+app.get('/download', (req, res) => {   
 
   try {
     // Read the HTML template file content
@@ -61,7 +61,7 @@ app.get('/download', (req, res) => {
   });
   } catch (error) {
     console.log(error)
-    res.json({error: error})
+    res.json({error: `Server started on port ${error}`})
   }
   
 });
