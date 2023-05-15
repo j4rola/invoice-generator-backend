@@ -67,7 +67,7 @@ app.get('/download', (req, res) => {
         // Generate the PDF from HTML
         pdf.create(htmlWithStyles).toStream((err, stream) => {
             if (err) {
-                res.status(500).send(err);
+                res.status(500).send(err.message);
                 return;
             }
             // Set the appropriate headers for PDF response
