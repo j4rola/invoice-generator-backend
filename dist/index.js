@@ -34,6 +34,9 @@ const mustache_1 = __importDefault(require("mustache"));
 const app = (0, express_1.default)();
 const templateFilePath = path_1.default.join(__dirname, '/index.html');
 const cssFilePath = path_1.default.join(__dirname, '/style.css'); // Path to your CSS file
+app.get('/', (req, res) => {
+    res.send('testing');
+});
 app.get('/download', (req, res) => {
     // Read the HTML template file content
     const template = fs_1.default.readFileSync(templateFilePath, 'utf-8');
@@ -71,7 +74,7 @@ app.get('/download', (req, res) => {
         stream.pipe(res);
     });
 });
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
 });
