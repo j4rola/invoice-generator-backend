@@ -48,7 +48,7 @@ app.get('/download', (req, res) => {
   // Generate the PDF from HTML
   pdf.create(htmlWithStyles).toStream((err, stream) => {
     if (err) {
-      res.status(500).send('An error occurred');
+      res.status(500).send(err);
       return;
     }
 
