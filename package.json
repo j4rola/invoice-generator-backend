@@ -23,7 +23,6 @@
     "html-pdf": "^3.0.1",
     "mustache": "^4.2.0",
     "nodemon": "^2.0.22",
-    "pdfkit": "^0.13.0",
-    "puppeteer": "^20.2.0"
+    "pdfkit": "^0.13.0"
   }
 }
