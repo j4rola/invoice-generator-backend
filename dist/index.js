@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 });
 app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const chromePath = '/Users/joefroula/Documents/invoice-generator-backend/.cache/puppeteer)';
         const browser = yield puppeteer_1.default.launch();
         const page = yield browser.newPage();
         // Configure page settings as needed

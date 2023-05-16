@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
 
 app.get('/generate-pdf', async (req, res) => {  
   try {
+    const chromePath = '/Users/joefroula/Documents/invoice-generator-backend/.cache/puppeteer)'
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
@@ -46,7 +47,7 @@ app.get('/generate-pdf', async (req, res) => {
     readableStream.pipe(res);
   } catch (error) {
     console.error('Error generating the PDF file:', error);
-    res.status(500).send(error);
+    res.status(500).send(error);    
   }
 });
 
