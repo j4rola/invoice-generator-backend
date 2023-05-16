@@ -13,10 +13,8 @@ app.get('/', (req, res) => {
 
 app.get('/generate-pdf', async (req, res) => {  
   try {
-    const chromePath = '/opt/render/.cache/puppeteer'
-    const browser = await puppeteer.launch({
-      executablePath: chromePath
-    });
+  
+    const browser = await puppeteer.launch();  
     const page = await browser.newPage();
 
     // Configure page settings as needed
