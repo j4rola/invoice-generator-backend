@@ -45,7 +45,7 @@ app.get('/generate-pdf', async (req, res) => {
     // Pipe the PDF stream to the response
     readableStream.pipe(res);
   } catch (error) {
-    console.error('Error generating the PDF:', error);
+    console.error('Error generating the PDF file:', error);
     res.status(500).send(error);
   }
 });
