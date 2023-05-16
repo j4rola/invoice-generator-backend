@@ -1,74 +1,59 @@
 import path from 'path';
 import express from 'express';
-import * as pdf from 'html-pdf';
-import fs from 'fs';
-import mustache from 'mustache';
-import cors from 'cors'
+import cors from 'cors'; 
+import puppeteer from 'puppeteer';
+import { Readable } from 'stream';
 
 const app = express();
 app.use(cors())
-
-const templateFilePath = path.join(__dirname, '/index.html');
-const cssFilePath = path.join(__dirname, '/style.css'); // Path to your CSS file
 
 app.get('/', (req, res) => {  
   res.send('testing')
 })
 
-app.get('/download', (req, res) => {   
-
+app.get('/generate-pdf', async (req, res) => {  
   try {
-    // Read the HTML template file content
-  const template = fs.readFileSync(templateFilePath, 'utf-8');
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
 
-  // Read the CSS file content
-  const css = fs.readFileSync(cssFilePath, 'utf-8'); 
+    // Configure page settings as needed
+    // For example, you can set the page content with page.setContent(html)
+    
+    // Navigate to the page that the client is on
+    //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
+    await page.goto('http://localhost:3001/');
+    
+    
+    // Generate the PDF stream
+    const pdfStream = await page.pdf({ 
+      format: 'A4', preferCSSPageSize: true,
+      printBackground: true 
+    });
 
-  // Replace the placeholders in the template with actual values from the request
-  const html = mustache.render(template, {
-    name: 'test',
-    email: 'testing',    
-    // Add more values as needed
-  });
-
-  // Combine HTML template and CSS styles
-  const htmlWithStyles = `
-    <html>
-      <head>
-        <style>
-          ${css}
-        </style>
-      </head>
-      <body>
-        ${html}
-      </body>
-    </html>
-  `;
-
-  // Generate the PDF from HTML
-  pdf.create(htmlWithStyles).toStream((err, stream) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }
+    // Close the Puppeteer browser
+    await browser.close();
 
     // Set the appropriate headers for PDF response
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename=converted.pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
+
+    // Convert the PDF stream to a Readable stream
+    const readableStream = new Readable();
+    readableStream.push(pdfStream);
+    readableStream.push(null);
 
     // Pipe the PDF stream to the response
-    stream.pipe(res);
-  });
+    readableStream.pipe(res);
   } catch (error) {
-    console.log(error)
-    res.json({error: `Server started on port ${error}`})
+    console.error('Error generating PDF:', error);
+    res.status(500).send(error);
   }
-  
 });
+
 
 const port = process.env.PORT || 3000; 
 app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+  console.log(`Server started on port ${port}`);  
 });
 
 

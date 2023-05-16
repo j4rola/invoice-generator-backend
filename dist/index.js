@@ -1,87 +1,57 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
-const pdf = __importStar(require("html-pdf"));
-const fs_1 = __importDefault(require("fs"));
-const mustache_1 = __importDefault(require("mustache"));
 const cors_1 = __importDefault(require("cors"));
+const puppeteer_1 = __importDefault(require("puppeteer"));
+const stream_1 = require("stream");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
-const templateFilePath = path_1.default.join(__dirname, '/index.html');
-const cssFilePath = path_1.default.join(__dirname, '/style.css'); // Path to your CSS file
 app.get('/', (req, res) => {
     res.send('testing');
 });
-app.get('/download', (req, res) => {
+app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Read the HTML template file content
-        const template = fs_1.default.readFileSync(templateFilePath, 'utf-8');
-        // Read the CSS file content
-        const css = fs_1.default.readFileSync(cssFilePath, 'utf-8');
-        // Replace the placeholders in the template with actual values from the request
-        const html = mustache_1.default.render(template, {
-            name: 'test',
-            email: 'testing',
-            // Add more values as needed
+        const browser = yield puppeteer_1.default.launch();
+        const page = yield browser.newPage();
+        // Configure page settings as needed
+        // For example, you can set the page content with page.setContent(html)
+        // Navigate to the page that the client is on
+        //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
+        yield page.goto('http://localhost:3001/');
+        // Generate the PDF stream
+        const pdfStream = yield page.pdf({
+            format: 'A4', preferCSSPageSize: true,
+            printBackground: true
         });
-        // Combine HTML template and CSS styles
-        const htmlWithStyles = `
-    <html>
-      <head>
-        <style>
-          ${css}
-        </style>
-      </head>
-      <body>
-        ${html}
-      </body>
-    </html>
-  `;
-        // Generate the PDF from HTML
-        pdf.create(htmlWithStyles).toStream((err, stream) => {
-            if (err) {
-                res.status(500).send(err.message);
-                return;
-            }
-            // Set the appropriate headers for PDF response
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename=converted.pdf');
-            // Pipe the PDF stream to the response
-            stream.pipe(res);
-        });
+        // Close the Puppeteer browser
+        yield browser.close();
+        // Set the appropriate headers for PDF response
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
+        // Convert the PDF stream to a Readable stream
+        const readableStream = new stream_1.Readable();
+        readableStream.push(pdfStream);
+        readableStream.push(null);
+        // Pipe the PDF stream to the response
+        readableStream.pipe(res);
     }
     catch (error) {
-        console.log(error);
-        res.json({ error: `Server started on port ${error}` });
+        console.error('Error generating PDF:', error);
+        res.status(500).send(error);
     }
-});
+}));
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
