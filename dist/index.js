@@ -19,7 +19,7 @@ const stream_1 = require("stream");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.get('/', (req, res) => {
-    res.send('testing');
+    res.send('testing server');
 });
 app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

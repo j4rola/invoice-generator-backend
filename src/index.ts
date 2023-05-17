@@ -8,7 +8,7 @@ const app = express();
 app.use(cors())
 
 app.get('/', (req, res) => {       
-  res.send('testing')
+  res.send('testing server')
 })
 
 app.get('/generate-pdf', async (req, res) => {  
