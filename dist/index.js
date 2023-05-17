@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
     res.send('testing server');
 });
 app.post('/', (req, res) => {
-    console.log(req.body);
+    console.log(req);
     res.send('testing server');
 });
 app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
