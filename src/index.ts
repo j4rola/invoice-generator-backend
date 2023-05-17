@@ -7,7 +7,13 @@ import { Readable } from 'stream';
 const app = express();
 app.use(cors())
 
-app.get('/', (req, res) => {       
+app.get('/', (req, res) => {   
+      
+  res.send('testing server')
+})
+
+app.post('/', (req, res) => {   
+  console.log(req.body) 
   res.send('testing server')
 })
 

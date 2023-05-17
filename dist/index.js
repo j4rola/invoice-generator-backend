@@ -21,6 +21,10 @@ app.use((0, cors_1.default)());
 app.get('/', (req, res) => {
     res.send('testing server');
 });
+app.post('/', (req, res) => {
+    console.log(req.body);
+    res.send('testing server');
+});
 app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const browser = yield puppeteer_1.default.launch();
