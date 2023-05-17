@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 app.get('/generate-pdf', async (req, res) => {  
   try {
   
-    const browser = await puppeteer.launch();  
+    const browser = await puppeteer.launch({ headless: 'new' });  
     const page = await browser.newPage();
 
     // Configure page settings as needed

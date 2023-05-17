@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const browser = yield puppeteer_1.default.launch();
+        const browser = yield puppeteer_1.default.launch({ headless: 'new' });
         const page = yield browser.newPage();
         // Configure page settings as needed
         // For example, you can set the page content with page.setContent(html)
