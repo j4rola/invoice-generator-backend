@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 app.get('/generate-pdf', async (req, res) => {  
   try {
   
-    const browser = await puppeteer.launch({ headless: 'new' });  
+    const browser = await puppeteer.launch();  
     const page = await browser.newPage();
 
     // Configure page settings as needed
@@ -22,16 +22,16 @@ app.get('/generate-pdf', async (req, res) => {
     
     // Navigate to the page that the client is on
     //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
-    await page.goto('http://localhost:3001/');
+    await page.goto('https://example.com/');
     
     
     // Generate the PDF stream
     const pdfStream = await page.pdf({ 
-      format: 'A4', preferCSSPageSize: true,
+      format: 'a4', preferCSSPageSize: true,
       printBackground: true 
     });
 
-    // Close the Puppeteer browser
+    // Close the Puppeteer browser  
     await browser.close();
 
     // Set the appropriate headers for PDF response
