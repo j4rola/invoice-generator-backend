@@ -3,17 +3,18 @@ import express from 'express';
 import cors from 'cors'; 
 import puppeteer from 'puppeteer';
 import { Readable } from 'stream';
+import bodyParser from 'body-parser';
 
 const app = express();
 app.use(cors())
-
+app.use(bodyParser.json());
 app.get('/', (req, res) => {   
       
   res.send('testing server')
 })
 
 app.post('/', (req, res) => {   
-  console.log(req) 
+  console.log(req.body) 
   res.send('testing server')
 })
 
