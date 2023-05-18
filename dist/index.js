@@ -38,7 +38,8 @@ app.post('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functi
         yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/');
         // Generate the PDF stream
         const pdfStream = yield page.pdf({
-            format: 'a4', preferCSSPageSize: true,
+            format: 'a4',
+            preferCSSPageSize: true,
             printBackground: true
         });
         // Close the Puppeteer browser  
@@ -52,6 +53,7 @@ app.post('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functi
         readableStream.push(null);
         // Pipe the PDF stream to the response
         readableStream.pipe(res);
+        res.send(pdfStream);
     }
     catch (error) {
         console.error('Error generating the PDF file:', error);

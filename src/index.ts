@@ -8,6 +8,8 @@ import bodyParser from 'body-parser';
 const app = express();
 app.use(cors())
 app.use(bodyParser.json());
+
+
 app.get('/', (req, res) => {   
       
   res.send('testing server')
@@ -34,7 +36,8 @@ app.post('/generate-pdf', async (req, res) => {
     
     // Generate the PDF stream
     const pdfStream = await page.pdf({ 
-      format: 'a4', preferCSSPageSize: true,
+      format: 'a4', 
+      preferCSSPageSize: true,
       printBackground: true 
     });
 
@@ -52,6 +55,7 @@ app.post('/generate-pdf', async (req, res) => {
 
     // Pipe the PDF stream to the response
     readableStream.pipe(res);
+    res.send(pdfStream)
   } catch (error) {
     console.error('Error generating the PDF file:', error);
     res.status(500).send(error);    
