@@ -27,7 +27,7 @@ app.post('/', (req, res) => {
     console.log(req.body);
     res.send('testing server');
 });
-app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const browser = yield puppeteer_1.default.launch();
         const page = yield browser.newPage();
@@ -35,7 +35,7 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         // For example, you can set the page content with page.setContent(html)
         // Navigate to the page that the client is on
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
-        yield page.goto('https://example.com/');
+        yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/');
         // Generate the PDF stream
         const pdfStream = yield page.pdf({
             format: 'a4', preferCSSPageSize: true,

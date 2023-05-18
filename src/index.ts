@@ -18,7 +18,7 @@ app.post('/', (req, res) => {
   res.send('testing server')
 })
 
-app.get('/generate-pdf', async (req, res) => {  
+app.post('/generate-pdf', async (req, res) => {  
   try {
   
     const browser = await puppeteer.launch();  
@@ -29,7 +29,7 @@ app.get('/generate-pdf', async (req, res) => {
     
     // Navigate to the page that the client is on
     //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
-    await page.goto('https://example.com/');
+    await page.goto('https://invoice-generator-frontend-5p3c.vercel.app/');
     
     
     // Generate the PDF stream
