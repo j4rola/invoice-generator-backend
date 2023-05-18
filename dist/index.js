@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
-const stream_1 = require("stream");
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -44,15 +43,10 @@ app.post('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
         // Close the Puppeteer browser  
         yield browser.close();
-        // Set the appropriate headers for PDF response
+        // Set the appropriate headers for PDF download
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
-        // Convert the PDF stream to a Readable stream
-        const readableStream = new stream_1.Readable();
-        readableStream.push(pdfStream);
-        readableStream.push(null);
-        // Pipe the PDF stream to the response
-        readableStream.pipe(res);
+        // Send the PDF buffer as the response
         res.send(pdfStream);
     }
     catch (error) {
