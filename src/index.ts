@@ -20,7 +20,7 @@ app.post('/', (req, res) => {
   res.send('testing server')
 })
 
-app.post('/generate-pdf', async (req, res) => {  
+app.get('/generate-pdf', async (req, res) => {  
   try {
   
     const browser = await puppeteer.launch();  
@@ -44,15 +44,20 @@ app.post('/generate-pdf', async (req, res) => {
     // Close the Puppeteer browser  
     await browser.close();
 
-     // Set the appropriate headers for PDF download
-     res.setHeader('Content-Type', 'application/pdf');
-     res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
- 
-     // Send the PDF buffer as the response
-     res.send(pdfStream);
+     // Set the appropriate headers for PDF response
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
+
+    // Convert the PDF stream to a Readable stream
+    const readableStream = new Readable();
+    readableStream.push(pdfStream);
+    readableStream.push(null);
+
+    // Pipe the PDF stream to the response
+    readableStream.pipe(res);
     
   } catch (error) {
-    console.error('Error generating the PDF file:', error);
+    console.error('Error generating the PDF file:', error);   
     res.status(500).send(error);    
   }
 });

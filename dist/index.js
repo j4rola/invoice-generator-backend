@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
+const stream_1 = require("stream");
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -26,7 +27,7 @@ app.post('/', (req, res) => {
     console.log(req.body);
     res.send('testing server');
 });
-app.post('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const browser = yield puppeteer_1.default.launch();
         const page = yield browser.newPage();
@@ -43,11 +44,15 @@ app.post('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
         // Close the Puppeteer browser  
         yield browser.close();
-        // Set the appropriate headers for PDF download
+        // Set the appropriate headers for PDF response
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="document.pdf"');
-        // Send the PDF buffer as the response
-        res.send(pdfStream);
+        // Convert the PDF stream to a Readable stream
+        const readableStream = new stream_1.Readable();
+        readableStream.push(pdfStream);
+        readableStream.push(null);
+        // Pipe the PDF stream to the response
+        readableStream.pipe(res);
     }
     catch (error) {
         console.error('Error generating the PDF file:', error);
