@@ -29,9 +29,10 @@ app.post('/', (req, res) => {
 });
 app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(req.params);
         const browser = yield puppeteer_1.default.launch();
         const page = yield browser.newPage();
-        // Configure page settings as needed
+        // Configure page settings as needed   
         // For example, you can set the page content with page.setContent(html)
         // Navigate to the page that the client is on
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
