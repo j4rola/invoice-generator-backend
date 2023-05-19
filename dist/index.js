@@ -38,14 +38,17 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
         yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
         const newValue = {
+            title: req.query.title,
             paymentTerms: req.query.paymentTerms,
             invoiceDate: req.query.invoiceDate,
             invoiceAmount: req.query.invoiceAmount
         };
         yield page.evaluate((newValue) => {
+            const title = document.querySelector('#title');
             const paymentTerms = document.querySelector('#paymentTerms');
             const invoiceDate = document.querySelector('#invoiceDate');
             const invoiceAmount = document.querySelector('#invoiceAmount');
+            title.textContent = newValue.title;
             paymentTerms.textContent = newValue.paymentTerms;
             invoiceDate.textContent = newValue.invoiceDate;
             invoiceAmount.textContent = newValue.invoiceAmount;

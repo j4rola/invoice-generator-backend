@@ -35,15 +35,18 @@ app.get('/generate-pdf', async (req, res) => {
 
     const newValue: any = { 
       
+      title: req.query.title, 
       paymentTerms: req.query.paymentTerms,
       invoiceDate: req.query.invoiceDate, 
       invoiceAmount: req.query.invoiceAmount
     
     }
     await page.evaluate((newValue) => {
+      const title: any = document.querySelector('#title')
       const paymentTerms: any = document.querySelector('#paymentTerms')
       const invoiceDate: any = document.querySelector('#invoiceDate')
       const invoiceAmount: any = document.querySelector('#invoiceAmount')
+      title.textContent = newValue.title
       paymentTerms.textContent = newValue.paymentTerms
       invoiceDate.textContent = newValue.invoiceDate
       invoiceAmount.textContent = newValue.invoiceAmount 
