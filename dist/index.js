@@ -36,7 +36,6 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         // Navigate to the page that the client is on
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
         yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
-        yield page.reload();
         // Generate the PDF stream
         const pdfStream = yield page.pdf({
             format: 'a4',
