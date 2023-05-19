@@ -33,7 +33,7 @@ app.get('/generate-pdf', async (req, res) => {
     //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
     await page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
     
-    
+    await page.reload()
     // Generate the PDF stream
     const pdfStream = await page.pdf({ 
       format: 'a4', 
