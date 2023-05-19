@@ -33,10 +33,20 @@ app.get('/generate-pdf', async (req, res) => {
     //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
     await page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
 
-    const newValue: any = req.query.paymentTerms
+    const newValue: any = { 
+      
+      paymentTerms: req.query.paymentTerms,
+      invoiceDate: req.query.invoiceDate, 
+      invoiceAmount: req.query.invoiceAmount
+    
+    }
     await page.evaluate((newValue) => {
-      const dynamicElement: any = document.querySelector('#test')
-      dynamicElement.textContent = newValue 
+      const paymentTerms: any = document.querySelector('#paymentTerms')
+      const invoiceDate: any = document.querySelector('#invoiceDate')
+      const invoiceAmount: any = document.querySelector('#invoiceAmount')
+      paymentTerms.textContent = newValue.paymentTerms
+      invoiceDate.textContent = newValue.invoiceDate
+      invoiceAmount.textContent = newValue.invoiceAmount 
     }, newValue);
     
     // Generate the PDF stream
