@@ -37,7 +37,7 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         // Navigate to the page that the client is on
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
         yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
-        const newValue = req.query.param1;
+        const newValue = req.query.paymentTerms;
         yield page.evaluate((newValue) => {
             const dynamicElement = document.querySelector('#test');
             dynamicElement.textContent = newValue;

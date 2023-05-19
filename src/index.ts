@@ -24,7 +24,7 @@ app.get('/generate-pdf', async (req, res) => {
   try {
     console.log(req.query)
     const browser = await puppeteer.launch();  
-    const page = await browser.newPage();
+    const page = await browser.newPage();  
 
     // Configure page settings as needed      
     // For example, you can set the page content with page.setContent(html)
@@ -33,7 +33,7 @@ app.get('/generate-pdf', async (req, res) => {
     //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
     await page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
 
-    const newValue: any = req.query.param1
+    const newValue: any = req.query.paymentTerms
     await page.evaluate((newValue) => {
       const dynamicElement: any = document.querySelector('#test')
       dynamicElement.textContent = newValue 
