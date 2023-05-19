@@ -39,6 +39,12 @@ app.get('/generate-pdf', async (req, res) => {
       preferCSSPageSize: true,
       printBackground: true 
     });
+    
+    const newValue: string = 'x'
+    await page.evaluate((newValue) => {
+      const dynamicElement: any = document.querySelector('#test')
+      dynamicElement.textContent = newValue 
+    }, newValue);
 
     // Close the Puppeteer browser  
     await browser.close();

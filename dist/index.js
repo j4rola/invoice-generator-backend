@@ -42,6 +42,11 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
             preferCSSPageSize: true,
             printBackground: true
         });
+        const newValue = 'x';
+        yield page.evaluate((newValue) => {
+            const dynamicElement = document.querySelector('#test');
+            dynamicElement.textContent = newValue;
+        }, newValue);
         // Close the Puppeteer browser  
         yield browser.close();
         // Set the appropriate headers for PDF response
