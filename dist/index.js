@@ -36,17 +36,17 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         // Navigate to the page that the client is on
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
         yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
+        const newValue = 'x';
+        yield page.evaluate((newValue) => {
+            const dynamicElement = document.querySelector('#test');
+            dynamicElement.textContent = newValue;
+        }, newValue);
         // Generate the PDF stream
         const pdfStream = yield page.pdf({
             format: 'a4',
             preferCSSPageSize: true,
             printBackground: true
         });
-        const newValue = 'x';
-        yield page.evaluate((newValue) => {
-            const dynamicElement = document.querySelector('#test');
-            dynamicElement.textContent = newValue;
-        }, newValue);
         // Close the Puppeteer browser  
         yield browser.close();
         // Set the appropriate headers for PDF response

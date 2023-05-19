@@ -32,6 +32,12 @@ app.get('/generate-pdf', async (req, res) => {
     // Navigate to the page that the client is on
     //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
     await page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
+
+    const newValue: string = 'x'
+    await page.evaluate((newValue) => {
+      const dynamicElement: any = document.querySelector('#test')
+      dynamicElement.textContent = newValue 
+    }, newValue);
     
     // Generate the PDF stream
     const pdfStream = await page.pdf({ 
@@ -40,11 +46,7 @@ app.get('/generate-pdf', async (req, res) => {
       printBackground: true 
     });
     
-    const newValue: string = 'x'
-    await page.evaluate((newValue) => {
-      const dynamicElement: any = document.querySelector('#test')
-      dynamicElement.textContent = newValue 
-    }, newValue);
+    
 
     // Close the Puppeteer browser  
     await browser.close();
