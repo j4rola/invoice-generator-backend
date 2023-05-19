@@ -22,11 +22,11 @@ app.post('/', (req, res) => {
 
 app.get('/generate-pdf', async (req, res) => {  
   try {
-    console.log(req.params)
+    console.log(req.query)
     const browser = await puppeteer.launch();  
     const page = await browser.newPage();
 
-    // Configure page settings as needed   
+    // Configure page settings as needed      
     // For example, you can set the page content with page.setContent(html)
     
     // Navigate to the page that the client is on
