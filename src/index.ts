@@ -4,6 +4,7 @@ import cors from 'cors';
 import puppeteer from 'puppeteer';
 import { Readable } from 'stream';
 import bodyParser from 'body-parser';
+import formatDate from '../utils/functions'; 
 
 const app = express();
 app.use(cors())
@@ -37,7 +38,7 @@ app.get('/generate-pdf', async (req, res) => {
       
       title: req.query.title, 
       paymentTerms: req.query.paymentTerms,
-      invoiceDate: req.query.invoiceDate, 
+      invoiceDate: formatDate(req.query.invoiceDate), 
       invoiceAmount: req.query.invoiceAmount
     
     }
