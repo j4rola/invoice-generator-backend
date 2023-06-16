@@ -62,6 +62,8 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
             preferCSSPageSize: true,
             printBackground: true
         });
+        const test = JSON.parse(newValue.lineItemArray);
+        console.log(test);
         // Close the Puppeteer browser  
         yield browser.close();
         // Set the appropriate headers for PDF response
