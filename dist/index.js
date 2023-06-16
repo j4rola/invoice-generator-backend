@@ -45,7 +45,7 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
             multiline: req.query.multiline,
             lineItemArray: req.query.lineItemArray
         };
-        console.log(JSON.parse(newValue.lineItemArray)) 
+        console.log(JSON.parse(newValue.lineItemArray[0])) 
         yield page.evaluate((newValue) => {
             const invoiceNumber = document.querySelector('#invoiceNumber');
             const paymentTerms = document.querySelector('#paymentTerms');
