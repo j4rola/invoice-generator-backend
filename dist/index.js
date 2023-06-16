@@ -17,6 +17,7 @@ const cors_1 = __importDefault(require("cors"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const stream_1 = require("stream");
 const body_parser_1 = __importDefault(require("body-parser"));
+const functions_1 = __importDefault(require("../utils/functions"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
@@ -38,17 +39,20 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         //await page.goto(req.headers.referer || '', { waitUntil: 'networkidle0' });
         yield page.goto('https://invoice-generator-frontend-5p3c.vercel.app/invoice');
         const newValue = {
-            invoiceNumber: req.query.invoiceNumber,
+            title: req.query.title,
             paymentTerms: req.query.paymentTerms,
-            invoiceDate: req.query.invoiceDate,
-            invoiceAmount: req.query.invoiceAmount
+            invoiceDate: (0, functions_1.default)(req.query.invoiceDate),
+            invoiceAmount: req.query.invoiceAmount,
+            multiline: req.query.multiline,
+            lineItemArray: req.query.lineItemArray
         };
+        console.log(newValue.lineItemArray);
         yield page.evaluate((newValue) => {
-            const invoiceNumber = document.querySelector('#invoiceNumber');
+            const title = document.querySelector('#title');
             const paymentTerms = document.querySelector('#paymentTerms');
             const invoiceDate = document.querySelector('#invoiceDate');
             const invoiceAmount = document.querySelector('#invoiceAmount');
-            invoiceNumber.textContent = newValue.invoiceNumber;
+            title.textContent = newValue.title;
             paymentTerms.textContent = newValue.paymentTerms;
             invoiceDate.textContent = newValue.invoiceDate;
             invoiceAmount.textContent = newValue.invoiceAmount;
