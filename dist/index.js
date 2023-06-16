@@ -17,7 +17,6 @@ const cors_1 = __importDefault(require("cors"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const stream_1 = require("stream");
 const body_parser_1 = __importDefault(require("body-parser"));
-const functions_1 = __importDefault(require("../utils/functions"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
@@ -41,7 +40,7 @@ app.get('/generate-pdf', (req, res) => __awaiter(void 0, void 0, void 0, functio
         const newValue = {
             title: req.query.title,
             paymentTerms: req.query.paymentTerms,
-            invoiceDate: (0, functions_1.default)(req.query.invoiceDate),
+            invoiceDate: req.query.invoiceDate,
             invoiceAmount: req.query.invoiceAmount,
             multiline: req.query.multiline,
             lineItemArray: req.query.lineItemArray
